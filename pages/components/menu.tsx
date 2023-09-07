@@ -13,6 +13,8 @@ import {
   useDisclosure,
   BoxProps,
   FlexProps,
+  Button,
+  useColorMode,
 } from "@chakra-ui/react";
 import {
   FiHome,
@@ -27,6 +29,8 @@ import { IconType } from "react-icons";
 import { useRouter } from "next/router";
 import { AiOutlineTeam, AiFillGithub } from "react-icons/ai";
 import { GiCrossedSwords } from "react-icons/gi";
+import { MdOutlineDarkMode } from "react-icons/md";
+import { BsSun } from "react-icons/bs";
 import { ExternalLinkIcon } from "@chakra-ui/icons";
 
 interface LinkItemProps {
@@ -81,6 +85,7 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
   };
 
   const [link, setLink] = useState<Array<LinkItemProps>>();
+  const { colorMode, toggleColorMode } = useColorMode();
 
   useEffect(() => {
     const admin = localStorage.getItem("isAdmin");
@@ -125,6 +130,18 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
         <Text fontSize="2xl" fontFamily="monospace" fontWeight="bold">
           KD 3167
         </Text>
+        {colorMode === "light" ? (
+          <BsSun
+            size={"20px"}
+            cursor={"pointer"}
+            onClick={toggleColorMode} />
+        ) : (
+          <MdOutlineDarkMode
+            size={"20px"}
+            cursor={"pointer"}
+            onClick={toggleColorMode}
+          />
+        )}
         <CloseButton display={{ base: "flex", md: "none" }} onClick={onClose} />
       </Flex>
       {link &&
