@@ -160,7 +160,7 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
         py="4"
         px="6"
       >
-        <Link href="https://github.com/Onurlulardan" isExternal>
+        <Link href="https://github.com/tahayasinkuloglu" isExternal>
           Contact the developer <ExternalLinkIcon mx="2px" />
         </Link>
       </Box>
