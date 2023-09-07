@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, useEffect, useState } from "react";
 import {
   Button,
   ModalOverlay,
@@ -105,6 +105,14 @@ const EqForm: FC<Props> = ({
     },
   });
 
+  const [firstCommander, setFirstCommander] = useState([]);
+  const [secondCommander, setSecondCommander] = useState([]);
+
+  useEffect(() => {
+    setFirstCommander(commander.commanders as any);
+    setSecondCommander(commander.commanders as any);
+  }, []);
+
   return (
     <>
       <Button onClick={onOpen} border={mode ? "0px" : "1px"}>
@@ -129,15 +137,16 @@ const EqForm: FC<Props> = ({
                     onChange={formik.handleChange}
                     defaultValue={march?.firstCommander}
                   >
-                    {commander.commanders
-                      .filter((x) => x != formik.values.secondCommander)
-                      .map((commander, index) => {
-                        return (
-                          <option key={index} value={commander}>
-                            {commander}
-                          </option>
-                        );
-                      })}
+                    {firstCommander &&
+                      firstCommander
+                        .filter((x) => x != formik.values.secondCommander)
+                        .map((commander) => {
+                          return (
+                            <option key={commander} value={commander}>
+                              {commander}
+                            </option>
+                          );
+                        })}
                   </Select>
                 </FormControl>
 
@@ -150,15 +159,16 @@ const EqForm: FC<Props> = ({
                     onChange={formik.handleChange}
                     defaultValue={march?.secondCommander}
                   >
-                    {commander.commanders
-                      .filter((x) => x != formik.values.firstCommander)
-                      .map((commander, index) => {
-                        return (
-                          <option key={index} value={commander}>
-                            {commander}
-                          </option>
-                        );
-                      })}
+                    {secondCommander &&
+                      secondCommander
+                        .filter((x) => x != formik.values.firstCommander)
+                        .map((commander) => {
+                          return (
+                            <option key={commander} value={commander}>
+                              {commander}
+                            </option>
+                          );
+                        })}
                   </Select>
                 </FormControl>
               </Flex>

@@ -100,7 +100,6 @@ const PlayerForm: FC<Props> = ({
             .then((res) => {
               if (res.status == 200) {
                 triggerSwal("Oyuncu başarıyla güncellendi", "", "success");
-                resetForm();
                 onClose();
                 customClose();
               } else {
@@ -110,11 +109,11 @@ const PlayerForm: FC<Props> = ({
         } else {
           await axios.post(`/api/player`, values).then((res) => {
             triggerSwal("Oyuncu başarıyla oluşturuldu", "", "success");
-            resetForm();
             onClose();
             customClose();
           });
         }
+        resetForm();
       } catch (error) {
         console.log("Hata:", error);
       }
@@ -144,7 +143,7 @@ const PlayerForm: FC<Props> = ({
                     name="isAdmin"
                     onChange={formik.handleChange}
                     value={formik.values.isAdmin as any}
-                    isChecked={player?.isAdmin}
+                    isChecked={formik.values?.isAdmin}
                   />
                 </FormControl>
 
@@ -155,7 +154,7 @@ const PlayerForm: FC<Props> = ({
                     name="isAoo"
                     onChange={formik.handleChange}
                     value={formik.values.isAoo as any}
-                    isChecked={player?.isAoo}
+                    isChecked={formik.values?.isAoo}
                   />
                 </FormControl>
 

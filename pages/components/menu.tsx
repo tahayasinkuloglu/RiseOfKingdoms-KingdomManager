@@ -1,4 +1,4 @@
-import React, { ReactNode } from "react";
+import React, { ReactNode, useEffect, useState } from "react";
 import {
   IconButton,
   Box,
@@ -34,15 +34,6 @@ interface LinkItemProps {
   path?: string;
   icon: IconType;
 }
-const LinkItems: Array<LinkItemProps> = [
-  { name: "Home", icon: FiHome, path: "/MainPage" },
-  { name: "Players", icon: FiUser, path: "/Players" },
-  { name: "Aoo Players", icon: FiUser, path: "/AooPlayers" },
-  { name: "Teams", icon: AiOutlineTeam, path: "/Teams" },
-  { name: "DKP Statistics", icon: FiTrendingUp, path: "/Statistics" },
-  { name: "Kvk Rally/Garrison", icon: GiCrossedSwords, path: "/Kvk" },
-  { name: "LogOut", icon: FiLogOut, path: "/" },
-];
 
 export default function SimpleSidebar({ children }: { children: ReactNode }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -88,6 +79,38 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
     }
     router.push(link.path);
   };
+
+  const [link, setLink] = useState<Array<LinkItemProps>>();
+
+  useEffect(() => {
+    const admin = localStorage.getItem("isAdmin");
+
+    if (admin == "true") {
+      const LinkItems: Array<LinkItemProps> = [
+        { name: "Home", icon: FiHome, path: "/MainPage" },
+        { name: "Players", icon: FiUser, path: "/Players" },
+        { name: "Aoo Players", icon: FiUser, path: "/AooPlayers" },
+        { name: "Teams", icon: AiOutlineTeam, path: "/Teams" },
+        { name: "DKP Statistics", icon: FiTrendingUp, path: "/Statistics" },
+        { name: "Kvk Rally/Garrison", icon: GiCrossedSwords, path: "/Kvk" },
+        { name: "Settings", icon: FiSettings, path: "/Settings" },
+        { name: "LogOut", icon: FiLogOut, path: "/" },
+      ];
+      setLink(LinkItems);
+    } else {
+      const LinkItems: Array<LinkItemProps> = [
+        { name: "Home", icon: FiHome, path: "/MainPage" },
+        { name: "Players", icon: FiUser, path: "/Players" },
+        { name: "Aoo Players", icon: FiUser, path: "/AooPlayers" },
+        { name: "Teams", icon: AiOutlineTeam, path: "/Teams" },
+        { name: "DKP Statistics", icon: FiTrendingUp, path: "/Statistics" },
+        { name: "Kvk Rally/Garrison", icon: GiCrossedSwords, path: "/Kvk" },
+        { name: "LogOut", icon: FiLogOut, path: "/" },
+      ];
+      setLink(LinkItems);
+    }
+  }, []);
+
   return (
     <Box
       bg={useColorModeValue("white", "gray.900")}
@@ -104,15 +127,16 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
         </Text>
         <CloseButton display={{ base: "flex", md: "none" }} onClick={onClose} />
       </Flex>
-      {LinkItems.map((link) => (
-        <NavItem
-          key={link.name}
-          icon={link.icon}
-          onClick={() => handleClick(link as any)}
-        >
-          {link.name}
-        </NavItem>
-      ))}
+      {link &&
+        link.map((link) => (
+          <NavItem
+            key={link.name}
+            icon={link.icon}
+            onClick={() => handleClick(link as any)}
+          >
+            {link.name}
+          </NavItem>
+        ))}
       <Box
         borderTop="1px"
         borderTopColor={useColorModeValue("gray.200", "gray.700")}
