@@ -132,7 +132,6 @@ const Settings: NextPage<Props> = () => {
                             href={`/playerdetails/${player._id}`}
                             display={"flex"}
                             justifyContent={"center"}
-                            a
                           >
                             {" "}
                             <FiEye />{" "}
