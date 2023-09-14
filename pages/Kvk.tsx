@@ -97,22 +97,16 @@ const Kvk: NextPage<Props> = () => {
         align={"flex-start"}
         justify={"flex-start"}
         justifyContent={"space-between"}
-        marginBottom={10}
+        marginBottom={"1rem"}
       >
-        <Flex alignItems={"center"}>
-          <Heading width={"4xl"}>Players who can fight now </Heading>
-          <Input
-            onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder="search"
-            border={"1px"}
-          />
+        <Flex alignItems={"center"} justifyContent={"space-between"} width={"100%"}>
+          <Heading>Players who can fight now </Heading>
+          <Heading>Current UTC Time: {currentUTCHour} </Heading>
         </Flex>
-
-        <Heading>Current UTC Time: {currentUTCHour} </Heading>
       </Flex>
       <Flex mx={"auto"} w={"full"} justify={"center"} align={"center"}>
         <TableContainer w={"full"} bg={useColorModeValue("white", "gray.700")}>
-          <Table variant="simple">
+          <Table variant="simple" className="table">
             <TableCaption>Online Player List</TableCaption>
             <Thead>
               <Tr>
@@ -120,7 +114,7 @@ const Kvk: NextPage<Props> = () => {
                 <Th>Power</Th>
                 <Th>Role</Th>
                 <Th>Civilization</Th>
-                <Th isNumeric>VIP</Th>
+                <Th>VIP</Th>
                 <Th>Details</Th>
               </Tr>
             </Thead>
@@ -139,10 +133,14 @@ const Kvk: NextPage<Props> = () => {
                         <Td>{player.power} (m)</Td>
                         <Td> {player.role} </Td>
                         <Td> {player.civilization} </Td>
-                        <Td isNumeric> {player.vip} </Td>
+                        <Td> {player.vip} </Td>
                         <Td>
                           {" "}
-                          <Link href={`/playerdetails/${player._id}`}>
+                          <Link
+                            href={`/playerdetails/${player._id}`}
+                            display={"flex"}
+                            justifyContent={"center"}
+                          >
                             {" "}
                             <FiEye />{" "}
                           </Link>{" "}
@@ -157,7 +155,7 @@ const Kvk: NextPage<Props> = () => {
                 <Th>Power</Th>
                 <Th>Role</Th>
                 <Th>Civilization</Th>
-                <Th isNumeric>VIP</Th>
+                <Th>VIP</Th>
                 <Th>Details</Th>
               </Tr>
             </Tfoot>
@@ -168,17 +166,11 @@ const Kvk: NextPage<Props> = () => {
         <Heading my={4} width={"xl"}>
           KvK Rally and Garrison List
         </Heading>
-        <Input
-          width={"xl"}
-          onChange={(e) => setSearchQuery(e.target.value)}
-          placeholder="search"
-          border={"1px"}
-        />
       </Flex>
 
       <Flex mx={"auto"} w={"full"} justify={"center"} align={"center"}>
         <TableContainer w={"full"} bg={useColorModeValue("white", "gray.700")}>
-          <Table variant="simple">
+          <Table variant="simple" className="table">
             <TableCaption>Rally & Garrison Player List</TableCaption>
             <Thead>
               <Tr>
@@ -186,7 +178,7 @@ const Kvk: NextPage<Props> = () => {
                 <Th>Power</Th>
                 <Th>Role</Th>
                 <Th>Civilization</Th>
-                <Th isNumeric>VIP</Th>
+                <Th>VIP</Th>
                 <Th>Details</Th>
               </Tr>
             </Thead>
@@ -205,10 +197,14 @@ const Kvk: NextPage<Props> = () => {
                         <Td>{player.power} (m)</Td>
                         <Td> {player.role} </Td>
                         <Td> {player.civilization} </Td>
-                        <Td isNumeric> {player.vip} </Td>
+                        <Td> {player.vip} </Td>
                         <Td>
                           {" "}
-                          <Link href={`/playerdetails/${player._id}`}>
+                          <Link
+                            href={`/playerdetails/${player._id}`}
+                            display={"flex"}
+                            justifyContent={"center"}
+                          >
                             {" "}
                             <FiEye />{" "}
                           </Link>{" "}
@@ -223,7 +219,7 @@ const Kvk: NextPage<Props> = () => {
                 <Th>Power</Th>
                 <Th>Role</Th>
                 <Th>Civilization</Th>
-                <Th isNumeric>VIP</Th>
+                <Th>VIP</Th>
                 <Th>Details</Th>
               </Tr>
             </Tfoot>

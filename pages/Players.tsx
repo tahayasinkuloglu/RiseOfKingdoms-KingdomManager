@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import SimpleSidebar from "./components/menu";
 import swal from "sweetalert";
+import ReactPaginate from "react-paginate";
 
 import {
   Table,
@@ -21,8 +22,11 @@ import {
   Box,
   Button,
   Input,
+  background,
 } from "@chakra-ui/react";
 import { FiEye, FiTrash } from "react-icons/fi";
+import { BsSearch } from "react-icons/bs";
+import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import axios from "axios";
 import { IFinalPlayer } from "@/utils/types";
 import PlayerForm from "./components/playerForm";
@@ -80,10 +84,14 @@ const Players: NextPage<Props> = () => {
     setVipSort(-vipSort);
   };
 
+  const triggerSwal = async (title: string, text: string, status: string) => {
+    swal(title, text, status);
+  };
+
   const handleDelete = async (playerid: string) => {
     swal({
-      title: "Delete Player",
-      text: "This process is irreversible.",
+      title: "Are you sure you want to delete the Player?",
+      text: "",
       icon: "warning",
       dangerMode: true,
       buttons: {
@@ -93,6 +101,7 @@ const Players: NextPage<Props> = () => {
     }).then(async (isDelete) => {
       if (isDelete) {
         await axios.delete(`/api/player/${playerid}`).then((res) => {
+          triggerSwal("Player successfully deleted!", "", "success");
           getData();
         });
       }
@@ -112,28 +121,47 @@ const Players: NextPage<Props> = () => {
     getData();
   }, []);
 
+  const [itemOffset, setItemOffset] = useState(0);
+
+  const itemsPerPage = 5;
+  const endOffset = itemOffset + itemsPerPage;
+  const currentItems = player.slice(itemOffset, endOffset);
+  const pageCount = Math.ceil(player.length / itemsPerPage);
+
+  const handlePageClick = (event: any) => {
+    const newOffset = (event.selected * itemsPerPage) % player.length;
+    setItemOffset(newOffset);
+  };
+
   return (
     <SimpleSidebar>
       <Flex
         minH={"full"}
-        align={"flex-start"}
+        align={"center"}
         justify={"flex-start"}
         justifyContent={"space-between"}
-        marginBottom={10}
+        marginBottom={"1rem"}
       >
-        <Flex alignItems={"center"}>
-          <Heading width={"2xl"}>Kingdom Player List</Heading>
-          <Input
-            onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder="search"
-            border={"1px"}
-          />
+        <Flex flexDirection={"column"} gap={"20px"}>
+          <Heading>Kingdom Player List</Heading>
+          <Flex align={"center"}>
+            <Box position={"absolute"} paddingLeft={"10px"}>
+              <BsSearch />
+            </Box>
+            <Input
+              onChange={(e) => setSearchQuery(e.target.value)}
+              paddingLeft={"34px"}
+              placeholder="Search.."
+              border={"1px"}
+            />
+          </Flex>
         </Flex>
+
         <PlayerForm setModalRender={setModalRender} />
       </Flex>
       <Flex mx={"auto"} w={"full"} justify={"center"} align={"center"}>
         <TableContainer w={"full"} bg={useColorModeValue("white", "gray.700")}>
-          <Table variant="simple">
+          <Table variant="simple" className="table">
             <TableCaption>Kingdom Player List</TableCaption>
             <Thead>
               <Tr>
@@ -154,8 +182,8 @@ const Players: NextPage<Props> = () => {
               </Tr>
             </Thead>
             <Tbody>
-              {player &&
-                player
+              {currentItems &&
+                currentItems
                   .filter((player) => {
                     return (
                       player.name
@@ -166,11 +194,11 @@ const Players: NextPage<Props> = () => {
                       player.power.toString().includes(searchQuery)
                     );
                   })
-                  .map((player, index) => {
+                  .map((player) => {
                     return (
-                      <Tr key={index}>
+                      <Tr key={player._id}>
                         {isAdmin === "true" ? (
-                          <Td>
+                          <Td display={"flex"} justifyContent={"center"}>
                             <PlayerForm
                               mode={true}
                               player={player}
@@ -184,7 +212,7 @@ const Players: NextPage<Props> = () => {
                         <Td> {player.civilization} </Td>
                         <Td> {player.vip} </Td>
                         {isAdmin === "true" ? (
-                          <Td>
+                          <Td display={"flex"} justifyContent={"center"}>
                             <Box cursor={"pointer"} width={"max-content"}>
                               <Button onClick={() => handleDelete(player._id)}>
                                 <FiTrash />
@@ -194,7 +222,11 @@ const Players: NextPage<Props> = () => {
                         ) : null}
                         <Td>
                           {" "}
-                          <Link href={`/playerdetails/${player._id}`}>
+                          <Link
+                            href={`/playerdetails/${player._id}`}
+                            display={"flex"}
+                            justifyContent={"center"}
+                          >
                             {" "}
                             <FiEye />{" "}
                           </Link>{" "}
@@ -217,6 +249,18 @@ const Players: NextPage<Props> = () => {
             </Tfoot>
           </Table>
         </TableContainer>
+      </Flex>
+      <Flex justifyContent={"center"} mt={"16px"}>
+        <ReactPaginate
+          className="test"
+          breakLabel="..."
+          nextLabel={<IoIosArrowForward size={30} />}
+          onPageChange={handlePageClick}
+          pageRangeDisplayed={2}
+          pageCount={pageCount}
+          previousLabel={<IoIosArrowBack size={30} />}
+          renderOnZeroPageCount={null}
+        />
       </Flex>
     </SimpleSidebar>
   );

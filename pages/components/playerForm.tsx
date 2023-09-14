@@ -99,7 +99,7 @@ const PlayerForm: FC<Props> = ({
             .patch(`/api/player/${player?._id}`, values)
             .then((res) => {
               if (res.status == 200) {
-                triggerSwal("Oyuncu başarıyla güncellendi", "", "success");
+                triggerSwal("Player successfully updated!", "", "success");
                 onClose();
                 customClose();
               } else {
@@ -108,7 +108,7 @@ const PlayerForm: FC<Props> = ({
             });
         } else {
           await axios.post(`/api/player`, values).then((res) => {
-            triggerSwal("Oyuncu başarıyla oluşturuldu", "", "success");
+            triggerSwal("Player successfully created!", "", "success");
             onClose();
             customClose();
           });
@@ -124,7 +124,7 @@ const PlayerForm: FC<Props> = ({
     <>
       {isAdmin === "true" ? (
         <Button onClick={onOpen} border={mode ? "0px" : "1px"} display={"flex"}>
-          {mode ? null : text} {mode ? <FiEdit2 /> : <FiPlus />}&nbsp;
+          {mode ? null : text} {mode ? <FiEdit2 /> : null}
         </Button>
       ) : null}
 

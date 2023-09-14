@@ -80,13 +80,13 @@ const TeamModal: FC<Props> = ({ mode, team, setModalRender }): JSX.Element => {
       try {
         if (mode) {
           await axios.patch(`/api/teams/${team?._id}`, values).then((res) => {
-            triggerSwal("Takım başarıyla güncellendi", "", "success");
+            triggerSwal("Team successfully updated!", "", "success");
             onClose();
             customClose();
           });
         } else {
           await axios.post(`/api/teams`, values).then((res) => {
-            triggerSwal("Takım başarıyla oluşturuldu", "", "success");
+            triggerSwal("Team successfully created!", "", "success");
             onClose();
             customClose();
             resetForm();
@@ -102,7 +102,7 @@ const TeamModal: FC<Props> = ({ mode, team, setModalRender }): JSX.Element => {
     <>
       {isAdmin === "true" ? (
         <Button onClick={onOpen} border={mode ? "0px" : "1px"} display={"flex"}>
-          {mode ? null : text} {mode ? <FiEdit2 /> : <FiPlus />}&nbsp;
+          {mode ? null : text} {mode ? <FiEdit2 /> : null}
         </Button>
       ) : null}
 

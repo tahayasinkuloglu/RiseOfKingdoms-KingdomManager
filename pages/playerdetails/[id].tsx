@@ -31,6 +31,7 @@ interface Props {
 const PlayerDetails: NextPage<Props> = ({ playerid }) => {
   const router = useRouter();
   const [player, setPlayer] = useState<IFinalPlayer>();
+  const [playerMarches, setPlayerMarches] = useState<any>([]);
 
   const setModalRender = () => {
     getData();
@@ -43,7 +44,7 @@ const PlayerDetails: NextPage<Props> = ({ playerid }) => {
   const handleDelete = async (marchid: string) => {
     if (marchid) {
       swal({
-        title: "March silinecek, emin misin?",
+        title: "Are you sure you want to delete the March?",
         text: "",
         icon: "warning",
         dangerMode: true,
@@ -56,7 +57,7 @@ const PlayerDetails: NextPage<Props> = ({ playerid }) => {
           await axios
             .delete(`/api/marches/${playerid}`, { data: marchid })
             .then(() => {
-              triggerSwal("March başarıyla silindi", "", "success");
+              triggerSwal("March successfully deleted!", "", "success");
               getData();
             });
         }
@@ -69,6 +70,13 @@ const PlayerDetails: NextPage<Props> = ({ playerid }) => {
       .get(`/api/player/${playerid}`)
       .then((res) => {
         setPlayer(res.data.player);
+      })
+      .catch((err) => console.log("--", err));
+
+    await axios
+      .get(`/api/marches/${playerid}`)
+      .then((res) => {
+        setPlayerMarches(res.data.marches);
       })
       .catch((err) => console.log("--", err));
   };
@@ -107,8 +115,8 @@ const PlayerDetails: NextPage<Props> = ({ playerid }) => {
               </Tr>
             </Thead>
             <Tbody>
-              {player && player.marches && player.marches.length > 0 ? (
-                player.marches.map((march, index) => {
+              {playerMarches && playerMarches && playerMarches.length > 0 ? (
+                playerMarches.map((march: any, index: any) => {
                   return (
                     <Tr key={index}>
                       <Td>

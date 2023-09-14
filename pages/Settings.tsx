@@ -2,7 +2,6 @@ import { NextPage } from "next";
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import SimpleSidebar from "./components/menu";
-import swal from "sweetalert";
 
 import {
   Table,
@@ -23,6 +22,7 @@ import {
   Input,
 } from "@chakra-ui/react";
 import { FiEye } from "react-icons/fi";
+import { BsSearch } from "react-icons/bs";
 import axios from "axios";
 import { IFinalPlayer } from "@/utils/types";
 
@@ -75,23 +75,29 @@ const Settings: NextPage<Props> = () => {
     <SimpleSidebar>
       <Flex
         minH={"full"}
-        align={"flex-start"}
+        align={"center"}
         justify={"flex-start"}
         justifyContent={"space-between"}
-        marginBottom={10}
+        marginBottom={"1rem"}
       >
-        <Flex alignItems={"center"} flexWrap={"wrap"} gap={"10px"} width={"100%"}>
-          <Heading width={"2xl"}>Settings</Heading>
-          <Input
-            onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder="search"
-            border={"1px"}
-          />
+        <Flex flexDirection={"column"} gap={"20px"}>
+          <Heading>Settings</Heading>
+          <Flex align={"center"}>
+            <Box position={"absolute"} paddingLeft={"10px"}>
+              <BsSearch />
+            </Box>
+            <Input
+              onChange={(e) => setSearchQuery(e.target.value)}
+              paddingLeft={"34px"}
+              placeholder="Search.."
+              border={"1px"}
+            />
+          </Flex>
         </Flex>
       </Flex>
       <Flex mx={"auto"} w={"full"} justify={"center"} align={"center"}>
         <TableContainer w={"full"} bg={useColorModeValue("white", "gray.700")}>
-          <Table variant="simple">
+          <Table variant="simple" className="table">
             <TableCaption>Settings</TableCaption>
             <Thead>
               <Tr>
@@ -122,7 +128,12 @@ const Settings: NextPage<Props> = () => {
                         <Td> {player.password} </Td>
                         <Td>
                           {" "}
-                          <Link href={`/playerdetails/${player._id}`}>
+                          <Link
+                            href={`/playerdetails/${player._id}`}
+                            display={"flex"}
+                            justifyContent={"center"}
+                            a
+                          >
                             {" "}
                             <FiEye />{" "}
                           </Link>{" "}

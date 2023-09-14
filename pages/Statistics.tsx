@@ -13,25 +13,23 @@ import {
   Flex,
   useColorModeValue,
   Heading,
-  Link,
   Button,
   Input,
+  Box,
 } from "@chakra-ui/react";
-import { FiEye } from "react-icons/fi";
 import React, { useEffect, useState } from "react";
 import { IFinalPlayer } from "@/utils/types";
 import axios from "axios";
 import { useRouter } from "next/router";
 import DKPModal from "./components/DKPModal";
 import moment from "moment";
-import { log } from "console";
+import { BsSearch } from "react-icons/bs"
 
 interface Props {}
 
 const Statistics: NextPage<Props> = () => {
   const router = useRouter();
   const [player, setPlayer] = useState<IFinalPlayer[]>([]);
-  const [DKP, setDKP] = useState();
   const [searchQuery, setSearchQuery] = useState("");
 
   const setModalRender = () => {
@@ -182,20 +180,26 @@ const Statistics: NextPage<Props> = () => {
         align={"flex-start"}
         justify={"flex-start"}
         justifyContent={"space-between"}
-        marginBottom={10}
+        marginBottom={"1rem"}
       >
-        <Flex alignItems={"center"}>
-          <Heading width={"lg"}>KvK Player Stats</Heading>
-          <Input
-            onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder="search"
-            border={"1px"}
-          />
+        <Flex flexDirection={"column"} gap={"20px"}>
+          <Heading>KvK Player Stats</Heading>
+          <Flex align={"center"}>
+            <Box position={"absolute"} paddingLeft={"10px"}>
+              <BsSearch />
+            </Box>
+            <Input
+              onChange={(e) => setSearchQuery(e.target.value)}
+              paddingLeft={"34px"}
+              placeholder="Search.."
+              border={"1px"}
+            />
+          </Flex>
         </Flex>
       </Flex>
       <Flex mx={"auto"} w={"full"} justify={"center"} align={"center"}>
         <TableContainer w={"full"} bg={useColorModeValue("white", "gray.700")}>
-          <Table variant="simple">
+          <Table variant="simple" className="table">
             <TableCaption>KvK Player Stats</TableCaption>
             <Thead>
               <Tr>

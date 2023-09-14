@@ -17,8 +17,11 @@ import {
   Heading,
   Link,
   Input,
+  Box,
+  Button,
 } from "@chakra-ui/react";
 import { FiEye } from "react-icons/fi";
+import { BsSearch } from "react-icons/bs";
 import { IFinalPlayer } from "@/utils/types";
 import axios from "axios";
 
@@ -45,6 +48,41 @@ const AooPlayers: NextPage<Props> = () => {
     getData();
   }, []);
 
+  const [isAscending, setIsAscending] = useState(true);
+  const [powerSort, setPowerSort] = useState(1);
+  const [vipSort, setVipSort] = useState(1);
+
+  const sortByName = () => {
+    const sortedPlayer = [...player];
+    sortedPlayer.sort((a, z) => {
+      if (isAscending) {
+        return a.name.localeCompare(z.name);
+      } else {
+        return z.name.localeCompare(a.name);
+      }
+    });
+    setPlayer(sortedPlayer);
+    setIsAscending(!isAscending);
+  };
+
+  const sortByPower = () => {
+    const sortedPlayer = [...player];
+    sortedPlayer.sort((a, b) => {
+      return (a.power - b.power) * powerSort;
+    });
+    setPlayer(sortedPlayer);
+    setPowerSort(-powerSort);
+  };
+
+  const sortByVIP = () => {
+    const sortedPlayer = [...player];
+    sortedPlayer.sort((a, b) => {
+      return (a.vip - b.vip) * vipSort;
+    });
+    setPlayer(sortedPlayer);
+    setVipSort(-vipSort);
+  };
+
   return (
     <SimpleSidebar>
       <Flex
@@ -52,28 +90,40 @@ const AooPlayers: NextPage<Props> = () => {
         align={"flex-start"}
         justify={"flex-start"}
         justifyContent={"space-between"}
-        marginBottom={10}
+        marginBottom={"1rem"}
       >
-        <Flex alignItems={"center"}>
-          <Heading width={"lg"}>Aoo Player List</Heading>
-          <Input
-            onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder="search"
-            border={"1px"}
-          />
+        <Flex flexDirection={"column"} gap={"20px"}>
+          <Heading>AOO Player List</Heading>
+          <Flex align={"center"}>
+            <Box position={"absolute"} paddingLeft={"10px"}>
+              <BsSearch />
+            </Box>
+            <Input
+              onChange={(e) => setSearchQuery(e.target.value)}
+              paddingLeft={"34px"}
+              placeholder="Search.."
+              border={"1px"}
+            />
+          </Flex>
         </Flex>
       </Flex>
       <Flex mx={"auto"} w={"full"} justify={"center"} align={"center"}>
         <TableContainer w={"full"} bg={useColorModeValue("white", "gray.700")}>
-          <Table variant="simple">
+          <Table variant="simple" className="table">
             <TableCaption>Aoo Player List</TableCaption>
             <Thead>
               <Tr>
-                <Th>Governor</Th>
-                <Th>Power</Th>
+                <Th>
+                  <Button onClick={sortByName}>Governor</Button>
+                </Th>
+                <Th>
+                  <Button onClick={sortByPower}>Power</Button>
+                </Th>
                 <Th>Role</Th>
                 <Th>Civilization</Th>
-                <Th isNumeric>VIP</Th>
+                <Th>
+                  <Button onClick={sortByVIP}>VIP</Button>
+                </Th>
                 <Th>Details</Th>
               </Tr>
             </Thead>
@@ -96,10 +146,14 @@ const AooPlayers: NextPage<Props> = () => {
                         <Td>{player.power} (m)</Td>
                         <Td> {player.role} </Td>
                         <Td> {player.civilization} </Td>
-                        <Td isNumeric> {player.vip} </Td>
+                        <Td> {player.vip} </Td>
                         <Td>
                           {" "}
-                          <Link href={`/playerdetails/${player._id}`}>
+                          <Link
+                            href={`/playerdetails/${player._id}`}
+                            display={"flex"}
+                            justifyContent={"center"}
+                          >
                             {" "}
                             <FiEye />{" "}
                           </Link>{" "}

@@ -28,6 +28,7 @@
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-icons": "^4.10.1",
+    "react-paginate": "^8.2.0",
     "sweetalert": "^2.1.2",
     "typescript": "5.1.6",
     "yup": "^1.2.0"

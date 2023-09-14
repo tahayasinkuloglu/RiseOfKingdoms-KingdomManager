@@ -19,7 +19,8 @@ import {
   Button,
   Input,
 } from "@chakra-ui/react";
-import { FiEye, FiTrash } from "react-icons/fi";
+import { FiTrash } from "react-icons/fi";
+import { BsSearch } from "react-icons/bs";
 import axios from "axios";
 import { useRouter } from "next/router";
 import { ITeams, IFinalPlayer } from "@/utils/types";
@@ -58,7 +59,7 @@ const Teams: NextPage<Props> = () => {
 
   const handleDelete = async (teamid: string) => {
     swal({
-      title: "Takımı silmek istediğine emin misin?",
+      title: "Are you sure you want to delete the Team?",
       text: "",
       icon: "warning",
       dangerMode: true,
@@ -69,7 +70,7 @@ const Teams: NextPage<Props> = () => {
     }).then(async (isDelete) => {
       if (isDelete) {
         await axios.delete(`/api/teams/${teamid}`).then((res) => {
-          triggerSwal("Takım başarıyla silindi", "", "success");
+          triggerSwal("Team successfully deleted!", "", "success");
           getData();
         });
       }
@@ -98,25 +99,31 @@ const Teams: NextPage<Props> = () => {
     <SimpleSidebar>
       <Flex
         minH={"full"}
-        align={"flex-start"}
+        align={"center"}
         justify={"flex-start"}
         justifyContent={"space-between"}
-        marginBottom={10}
+        marginBottom={"1rem"}
       >
-        <Flex alignItems={"center"}>
-          <Heading width={"md"}>Aoo Team List</Heading>
-          <Input
-            onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder="search"
-            border={"1px"}
-          />
+        <Flex flexDirection={"column"} gap={"20px"}>
+          <Heading>AOO Team List</Heading>
+          <Flex align={"center"}>
+            <Box position={"absolute"} paddingLeft={"10px"} color={"black"}>
+              <BsSearch />
+            </Box>
+            <Input
+              onChange={(e) => setSearchQuery(e.target.value)}
+              paddingLeft={"34px"}
+              placeholder="Search.."
+              border={"1px"}
+            />
+          </Flex>
         </Flex>
 
         <TeamModal setModalRender={setModalRender} />
       </Flex>
       <Flex mx={"auto"} w={"full"} justify={"center"} align={"center"}>
         <TableContainer w={"full"} bg={useColorModeValue("white", "gray.700")}>
-          <Table variant="simple">
+          <Table variant="simple" className="table">
             <TableCaption>Aoo Team List</TableCaption>
             <Thead>
               <Tr>
@@ -136,11 +143,11 @@ const Teams: NextPage<Props> = () => {
                       .toLocaleLowerCase()
                       .includes(searchQuery.toLocaleLowerCase());
                   })
-                  .map((team, index) => {
+                  .map((team) => {
                     return (
-                      <Tr key={index}>
+                      <Tr key={team._id}>
                         {isAdmin === "true" ? (
-                          <Td>
+                          <Td display={"flex"} justifyContent={"center"}>
                             <TeamModal
                               mode={true}
                               team={team}
@@ -151,7 +158,7 @@ const Teams: NextPage<Props> = () => {
                         <Td> {team.name} </Td>
                         <Td>{team.players.length}</Td>
                         {isAdmin === "true" ? (
-                          <Td>
+                          <Td display={"flex"} justifyContent={"center"}>
                             <Box cursor={"pointer"} width={"max-content"}>
                               <Button
                                 onClick={() => handleDelete(team._id as any)}

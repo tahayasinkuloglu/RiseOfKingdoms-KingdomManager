@@ -45,35 +45,35 @@ const MarchesSchema = new Schema<IMarches>({
   },
   helm: {
     type: String,
-    required: true,
+    default: "",
   },
   chest: {
     type: String,
-    required: true,
+    default: "",
   },
   weapon: {
     type: String,
-    required: true,
+    default: "",
   },
   glove: {
     type: String,
-    required: true,
+    default: "",
   },
   leg: {
     type: String,
-    required: true,
+    default: "",
   },
   boot: {
     type: String,
-    required: true,
+    default: "",
   },
   firstAccessory: {
     type: String,
-    required: true,
+    default: "",
   },
   secondAccessory: {
     type: String,
-    required: true,
+    default: "",
   },
   critHelm: {
     type: Boolean,

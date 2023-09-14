@@ -64,13 +64,13 @@ const DKPModal: FC<Props> = ({ player, setModalRender }): JSX.Element => {
     onSubmit: async (values, { resetForm }) => {
       try {
         await axios.patch(`/api/player/${player._id}`, values).then((res) => {
-          triggerSwal("DKP başarıyla güncellendi", "", "success");
+          triggerSwal("DKP successfully updated!", "", "success");
           resetForm();
           onClose();
           customClose();
         });
       } catch (error) {
-        console.log("Hata:", error);
+        console.log("Error:", error);
       }
     },
   });

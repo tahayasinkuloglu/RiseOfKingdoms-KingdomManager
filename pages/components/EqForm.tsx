@@ -86,14 +86,14 @@ const EqForm: FC<Props> = ({
           await axios
             .patch(`/api/marches/${march?._id}`, values)
             .then((res) => {
-              triggerSwal("March başarıyla güncellendi", "", "success");
+              triggerSwal("March successfully updated!", "", "success");
               resetForm();
               onClose();
               customClose();
             });
         } else {
           await axios.post(`/api/marches/${playerid}`, values).then((res) => {
-            triggerSwal("March başarıyla oluşturuldu", "", "success");
+            triggerSwal("March successfully created!", "", "success");
             resetForm();
             onClose();
             customClose();
@@ -116,8 +116,8 @@ const EqForm: FC<Props> = ({
   return (
     <>
       <Button onClick={onOpen} border={mode ? "0px" : "1px"}>
-        {mode ? null : "Add March"}&nbsp;
-        {mode ? <FiEdit2 /> : <FiPlus />}
+        {mode ? null : "Add March"}
+        {mode ? <FiEdit2 /> : null}
       </Button>
 
       <Modal isOpen={isOpen} onClose={onClose} size={"4xl"}>

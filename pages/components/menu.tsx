@@ -126,15 +126,12 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
       h="full"
       {...rest}
     >
-      <Flex h="20" alignItems="center" mx="8" justifyContent="space-between">
+      <Flex h="20" alignItems="center" mx="8" justifyContent="space-between" position={"relative"}>
         <Text fontSize="2xl" fontFamily="monospace" fontWeight="bold">
           KD 3167
         </Text>
         {colorMode === "light" ? (
-          <BsSun
-            size={"20px"}
-            cursor={"pointer"}
-            onClick={toggleColorMode} />
+          <BsSun size={"20px"} cursor={"pointer"} onClick={toggleColorMode} />
         ) : (
           <MdOutlineDarkMode
             size={"20px"}
@@ -144,26 +141,33 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
         )}
         <CloseButton display={{ base: "flex", md: "none" }} onClick={onClose} />
       </Flex>
-      {link &&
-        link.map((link) => (
-          <NavItem
-            key={link.name}
-            icon={link.icon}
-            onClick={() => handleClick(link as any)}
-          >
-            {link.name}
-          </NavItem>
-        ))}
-      <Box
-        borderTop="1px"
-        borderTopColor={useColorModeValue("gray.200", "gray.700")}
-        py="4"
-        px="6"
-      >
-        <Link href="https://github.com/tahayasinkuloglu" isExternal>
-          Contact the developer <ExternalLinkIcon mx="2px" />
-        </Link>
-      </Box>
+      <Flex direction={"column"}>
+        <Box>
+          {link &&
+            link.map((link) => (
+              <NavItem
+                key={link.name}
+                icon={link.icon}
+                onClick={() => handleClick(link as any)}
+              >
+                {link.name}
+              </NavItem>
+            ))}
+        </Box>
+        <Box
+          position={"absolute"}
+          bottom={0}
+          borderTop="2px"
+          borderTopColor={useColorModeValue("gray.200", "gray.700")}
+          py="4"
+          px="7"
+          textAlign={"center"}
+        >
+          <Link href="https://github.com/tahayasinkuloglu" isExternal>
+            Contact the developer <ExternalLinkIcon mx="2px" />
+          </Link>
+        </Box>
+      </Flex>
     </Box>
   );
 };
